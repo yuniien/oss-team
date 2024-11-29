@@ -11,6 +11,22 @@ import time
 #==========[Initialize]==========
 #==========[sensors]==========
 ev3 = EV3Brick()
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+gyro = GyroSensor(Port.S3)
+ser = UARTDevice(Port.S2, baudrate=115200)
+color = ColorSensor(Port.S1)
+Ultra = UltrasonicSensor(Port.S4)
+
+#==========[motors]==========
+grab_motor = Motor(Port.A)
+shooting_motor = Motor(Port.D)
+
+left_motor = Motor(Port.B)
+right_motor = Motor(Port.C)
+=======
+>>>>>>> f4737321c3ad44423fd78f611a8d913362b96a78
 gyro = GyroSensor(Port.S1)
 ser = UARTDevice(Port.S2, baudrate=115200)
 
@@ -20,6 +36,10 @@ shooting_motor = Motor(Port.C)
 
 left_motor = Motor(Port.A)
 right_motor = Motor(Port.D)
+<<<<<<< HEAD
+=======
+>>>>>>> 5f5f8b637a92ecfa02fa48c807c31996effd4756
+>>>>>>> f4737321c3ad44423fd78f611a8d913362b96a78
 robot = DriveBase(left_motor, right_motor, wheel_diameter=56, axle_track=115)
 
 #==========[target_angle turn(gyro)]==========
@@ -115,7 +135,15 @@ while True:
     # 데이터 처리 및 결과 필터링
     try:
         filter_result = process_uart_data(data)
+<<<<<<< HEAD
         #filter_result[0] : x, filter_result[1] : y
+=======
+<<<<<<< HEAD
+        # filter_result[0] : x, filter_result[1] : y
+=======
+        #filter_result[0] : x, filter_result[1] : y
+>>>>>>> 5f5f8b637a92ecfa02fa48c807c31996effd4756
+>>>>>>> f4737321c3ad44423fd78f611a8d913362b96a78
         if filter_result[0]!= -1 and filter_result[1]!= -1:
         # if filter_result[0]!= -1 and filter_result[1]!= -1:
             if filter_result[1] > 90: #공이 카메라 화면 기준으로 아래에 위치 = 로봇에 가까워졌다
@@ -132,9 +160,21 @@ while True:
                 grab('motion2') 
             else: #공이 카메라 화면 기준 멀리 위치해 있으면 chase한다
                 pd_control(filter_result[0], kp=0.5, kd=0.1, power=100)
+<<<<<<< HEAD
         # else: # 센서가 공을 보지 못했을 경우의 움직임.
         #     robot.straight(50)
         #     robot.turn(10)
+=======
+<<<<<<< HEAD
+        else: # 센서가 공을 보지 못했을 경우의 움직임.
+            robot.straight(50)
+            robot.turn(10)
+=======
+        # else: # 센서가 공을 보지 못했을 경우의 움직임.
+        #     robot.straight(50)
+        #     robot.turn(10)
+>>>>>>> 5f5f8b637a92ecfa02fa48c807c31996effd4756
+>>>>>>> f4737321c3ad44423fd78f611a8d913362b96a78
 
         time.sleep_ms(50)
     except:
