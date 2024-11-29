@@ -26,7 +26,11 @@ class Blob:
         return self.w * self.h  # 사각형 면적 계산
 
 # 3단계 코드: 특정 색상 범위로 블롭 감지
+<<<<<<< HEAD
 threshold_red = (200, 280, 120, 230, 30, 80)
+=======
+threshold_red = (170, 255, 100, 200, 20, 70)
+>>>>>>> 5f5f8b637a92ecfa02fa48c807c31996effd4756
 
 def find_blobs(img, threshold):
     width = img.width()

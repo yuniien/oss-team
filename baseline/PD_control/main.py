@@ -11,12 +11,21 @@ import time
 #==========[Initialize]==========
 #==========[sensors]==========
 ev3 = EV3Brick()
+<<<<<<< HEAD
 ser = UARTDevice(Port.S2, baudrate=115200)
 
 #==========[motors]==========
 
 left_motor = Motor(Port.B)
 right_motor = Motor(Port.C)
+=======
+ser = UARTDevice(Port.S1, baudrate=115200)
+
+#==========[motors]==========
+
+left_motor = Motor(Port.A)
+right_motor = Motor(Port.D)
+>>>>>>> 5f5f8b637a92ecfa02fa48c807c31996effd4756
 robot = DriveBase(left_motor, right_motor, wheel_diameter=56, axle_track=115)
 
 
@@ -57,7 +66,11 @@ previous_error = 0
 while True:
     try:
         data = ser.read_all()
+<<<<<<< HEAD
         filter_result = process_uart_data(data)   
+=======
+        filter_result = process_uart_data(data)
+>>>>>>> 5f5f8b637a92ecfa02fa48c807c31996effd4756
         if filter_result[0]!= -1 and filter_result[1]!= -1:
             print(filter_result)
             pd_control(filter_result[0], kp=0.5, kd=0.1, power=100)
