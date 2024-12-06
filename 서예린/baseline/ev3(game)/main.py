@@ -11,24 +11,10 @@ import time
 #==========[Initialize]==========
 #==========[sensors]==========
 ev3 = EV3Brick()
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-gyro = GyroSensor(Port.S3)
-ser = UARTDevice(Port.S2, baudrate=115200)
-color = ColorSensor(Port.S1)
-Ultra = UltrasonicSensor(Port.S4)
+gyro = GyroSensor(Port.S4)
+ser = UARTDevice(Port.S1, baudrate=115200)
+cs = ColorSensor(Port.S2)
 
-#==========[motors]==========
-grab_motor = Motor(Port.A)
-shooting_motor = Motor(Port.D)
-
-left_motor = Motor(Port.B)
-right_motor = Motor(Port.C)
-=======
->>>>>>> f4737321c3ad44423fd78f611a8d913362b96a78
-gyro = GyroSensor(Port.S1)
-ser = UARTDevice(Port.S2, baudrate=115200)
 
 #==========[motors]==========
 grab_motor = Motor(Port.B)
@@ -36,10 +22,6 @@ shooting_motor = Motor(Port.C)
 
 left_motor = Motor(Port.A)
 right_motor = Motor(Port.D)
-<<<<<<< HEAD
-=======
->>>>>>> 5f5f8b637a92ecfa02fa48c807c31996effd4756
->>>>>>> f4737321c3ad44423fd78f611a8d913362b96a78
 robot = DriveBase(left_motor, right_motor, wheel_diameter=56, axle_track=115)
 
 #==========[target_angle turn(gyro)]==========
@@ -94,12 +76,12 @@ def pd_control(cam_data, kp, kd, power):
 def grab(command):
     if command == 'motion3':
         #close
-        grab_motor.run_until_stalled(100,Stop.COAST,duty_limit=50)
+        grab_motor.run_until_stalled(3000,Stop.COAST,duty_limit=50)
         #set_zero point
-        grab_motor.reset_angle(0)
+        grab_motor.reset_angle(0)  
     elif command == 'motion1':
         #open1
-        grab_motor.run_until_stalled(-100,Stop.COAST,duty_limit=50)
+        grab_motor.run_until_stalled(-1000,Stop.COAST,duty_limit=50)
     elif command == 'motion2':
         #open2
         grab_motor.run_target(100,-100)
@@ -110,7 +92,7 @@ def shoot(command):
         shooting_motor.run_until_stalled(-100,Stop.COAST,duty_limit=50)
     elif command == 'shoot':
         #shooting
-        shooting_motor.run(1750)
+        shooting_motor.run(2500)
         time.sleep(0.25)
         shooting_motor.stop()
 
@@ -124,7 +106,7 @@ gyro.reset_angle(0)
 #==========[zero set position setting]==========
 shoot('zero') #shoot 모터가 안쪽이고,
 grab('motion3') #grab 모터가 바깥쪽이므로 shoot먼저 세팅 후 grab을 세팅해야한다
-time.sleep(0.1)
+time.sleep(1)
 grab('motion1') #공을 잡기 위한 높이로 열기
 
 print("Zero set postion completed")
@@ -135,47 +117,39 @@ while True:
     # 데이터 처리 및 결과 필터링
     try:
         filter_result = process_uart_data(data)
-<<<<<<< HEAD
         #filter_result[0] : x, filter_result[1] : y
-=======
-<<<<<<< HEAD
-        # filter_result[0] : x, filter_result[1] : y
-=======
-        #filter_result[0] : x, filter_result[1] : y
->>>>>>> 5f5f8b637a92ecfa02fa48c807c31996effd4756
->>>>>>> f4737321c3ad44423fd78f611a8d913362b96a78
         if filter_result[0]!= -1 and filter_result[1]!= -1:
+        # if filter_result[0]!= -1 and filter_result[1]!= -1:
             if filter_result[1] > 90: #공이 카메라 화면 기준으로 아래에 위치 = 로봇에 가까워졌다
                 robot.straight(100) #강제로 앞으로 이동
                 grab('motion3') #공을 잡기
-                time.sleep(0.1) #동작간 딜레이
+                time.sleep(1) #동작간 딜레이
                 current_angle = gyro.angle()
+                print("Current Angle", current_angle)
                 angle_difference = 0 - current_angle
-                turn(angle_difference, speed=100) #정면(상대방 진영)바라보기
-                time.sleep(0.1) #동작간 딜레이
-                grab('motion1') #슛을 위한 열기
+                print("Angle Difference:=", angle_difference)
+                robot.turn(angle_difference) #정면(상대방 진영)바라보기
+                print("Turn complete")
+                time.sleep(1) #동작간 딜레이
+                robot.straight(400)
+                # print("A")
+                # while cs.color()!=Color.GREEN:
+                #     pass
+                # robot.stop()
+                robot.straight(-50)
+                time.sleep(1)
+                grab('motion1') #슛을 위한 열기ssssssssssssssssssssssssssssssssssssssss
                 time.sleep(0.1) #동작간 딜레이
                 shoot('shoot') #공 날리기
-                time.sleep(0.1) #동작간 딜레이
+                time.sleep(1) #동작간 딜레이
                 shoot('zero')
                 grab('motion2') 
+                robot.straight(-900)
             else: #공이 카메라 화면 기준 멀리 위치해 있으면 chase한다
                 pd_control(filter_result[0], kp=0.5, kd=0.1, power=100)
-<<<<<<< HEAD
         # else: # 센서가 공을 보지 못했을 경우의 움직임.
         #     robot.straight(50)
         #     robot.turn(10)
-=======
-<<<<<<< HEAD
-        else: # 센서가 공을 보지 못했을 경우의 움직임.
-            robot.straight(50)
-            robot.turn(10)
-=======
-        # else: # 센서가 공을 보지 못했을 경우의 움직임.
-        #     robot.straight(50)
-        #     robot.turn(10)
->>>>>>> 5f5f8b637a92ecfa02fa48c807c31996effd4756
->>>>>>> f4737321c3ad44423fd78f611a8d913362b96a78
 
         time.sleep_ms(50)
     except:
