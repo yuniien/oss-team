@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import sensor, image, time
 import time
 from pyb import UART
@@ -96,7 +96,7 @@ while(True):
         # 블롭 정보 출력
         print("Blob [면적: %d, 중심 좌표: (%d, %d), 가로: %d, 세로: %d]" %
               (blob.area(), blob.x + blob.w//2, blob.y + blob.h//2, blob.w, blob.h))
-=======
+              
 import sensor, image, time
 import time
 from pyb import UART
@@ -194,4 +194,3 @@ while(True):
         # 블롭 정보 출력
         print("Blob [면적: %d, 중심 좌표: (%d, %d), 가로: %d, 세로: %d]" %
               (blob.area(), blob.x + blob.w//2, blob.y + blob.h//2, blob.w, blob.h))
->>>>>>> origin/yerin3
